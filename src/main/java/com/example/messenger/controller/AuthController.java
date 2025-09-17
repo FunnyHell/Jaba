@@ -5,14 +5,19 @@
 
 package com.example.messenger.controller;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.messenger.dto.UserRegisterDto;
-import com.example.messenger.dto.UserResponceDTO;
+import com.example.messenger.dto.UserResponseDTO;
 import com.example.messenger.service.AuthService;
+
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 
 /**
@@ -21,16 +26,16 @@ import com.example.messenger.service.AuthService;
  */
 @RequestMapping("/api/auth")
 @RestController
+@RequiredArgsConstructor
+@Validated
 public class AuthController {
     private final AuthService authService;
 
-    public AuthController(AuthService authService) {
-        this.authService = authService;
-    }
 
     @PostMapping("/register")
-    public UserResponceDTO postMethodName(@RequestBody UserRegisterDto userRegisterDto) {
-        return authService.register(userRegisterDto);
+    public ResponseEntity<UserResponseDTO> postMethodName(@Valid @RequestBody UserRegisterDto userRegisterDto) {
+        UserResponseDTO result = authService.register(userRegisterDto);
+        return ResponseEntity.ok(result);
     }
     
     

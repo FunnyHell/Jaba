@@ -5,7 +5,10 @@
 
 package com.example.messenger.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -14,16 +17,12 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class UserResponceDTO {
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class UserResponseDTO {
     private String message;
     private Long userId;
     private String username;
     private String email;
-
-    public UserResponceDTO(String message, Long userId, String username, String email) {
-        this.message = message;
-        this.userId = userId;
-        this.username = username;
-        this.email = email;
-    }
 }
