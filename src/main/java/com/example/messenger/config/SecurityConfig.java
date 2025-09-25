@@ -8,17 +8,18 @@ package com.example.messenger.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import com.example.messenger.repository.UserRepository;
+import com.example.messenger.service.UserDetailService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,38 +29,39 @@ import lombok.RequiredArgsConstructor;
  */
 @Configuration
 @RequiredArgsConstructor
+@EnableWebSecurity
 public class SecurityConfig {
-    private final UserRepository userRepository;
+    private final UserDetailService userDetailService;
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return email -> userRepository.findByEmail(email)
-                .map(user -> User.withUsername(user.getEmail())
-                        .password(user.getPassword())
-                        .roles("USER")
-                        .build())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-    }
-    
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
     
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception { //Проверяет можно ли юзеру срать: охраник в пятёрочке
         http
-            .csrf( csrf->csrf.disable() )
+            .csrf(AbstractHttpConfigurer::disable)
+            .sessionManagement(session -> session.sessionCreationPolicy((SessionCreationPolicy.STATELESS)))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/register").permitAll()
+                .requestMatchers("/api/auth/register", "/").permitAll()
+                .requestMatchers("/resources/**").permitAll()
                 .anyRequest().authenticated()
-            ).httpBasic(Customizer.withDefaults());
+            )
+            .authenticationProvider(authenticationProvider());
 
         return http.build();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration cfg) throws Exception {
+    public AuthenticationProvider authenticationProvider() { //Через него получает данные для проверки юзера
+        DaoAuthenticationProvider auth = new DaoAuthenticationProvider(userDetailService);
+        auth.setPasswordEncoder(passwordEncoder());
+        return auth;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration cfg) throws Exception { //Выбрасывает исключения
         return cfg.getAuthenticationManager();
     }
 }

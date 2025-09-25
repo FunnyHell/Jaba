@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.messenger.dto.UserRegisterDto;
+import com.example.messenger.dto.UserRegisterRequestDto;
 import com.example.messenger.dto.UserResponseDTO;
 import com.example.messenger.service.AuthService;
 
@@ -33,8 +33,8 @@ public class AuthController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponseDTO> postMethodName(@Valid @RequestBody UserRegisterDto userRegisterDto) {
-        UserResponseDTO result = authService.register(userRegisterDto);
+    public ResponseEntity<UserResponseDTO> userRegister(@Valid @RequestBody UserRegisterRequestDto userRegisterRequestDto) {
+        UserResponseDTO result = authService.register(userRegisterRequestDto);
         return ResponseEntity.ok(result);
     }
     

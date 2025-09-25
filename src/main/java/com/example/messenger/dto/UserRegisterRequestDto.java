@@ -1,8 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
 package com.example.messenger.dto;
 
 import jakarta.validation.constraints.Email;
@@ -21,7 +16,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRegisterDto {
+public class UserRegisterRequestDto {
     @NotBlank(message = "Username is mandatory")
     @Size(min = 3, max = 20, message = "Username must be between 3 and 20 characters")
     private String username;

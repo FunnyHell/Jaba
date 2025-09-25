@@ -7,9 +7,8 @@ package com.example.messenger.service;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.example.messenger.dto.UserRegisterDto;
+import com.example.messenger.dto.UserRegisterRequestDto;
 import com.example.messenger.dto.UserResponseDTO;
 import com.example.messenger.model.User;
 import com.example.messenger.repository.UserRepository;
@@ -26,15 +25,7 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Transactional
-    public UserResponseDTO register(UserRegisterDto userRegisterDto) {
-        if (userRepository.existsByEmail(userRegisterDto.getEmail())) {
-            throw new IllegalArgumentException("Email is already in use");
-        }
-
-        if (userRepository.existsByUsername(userRegisterDto.getUsername())) {
-            throw new IllegalArgumentException("Username is already in use");
-        }
+    public UserResponseDTO register(UserRegisterRequestDto userRegisterDto) {
 
         String hashedPassword = passwordEncoder.encode(userRegisterDto.getPassword());
 
