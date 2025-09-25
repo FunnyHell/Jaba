@@ -24,13 +24,11 @@ public class UserDetail implements UserDetails {
     private final String username;
     private final String password;
 
-    private final String email;
 
     public UserDetail(User user) {
         this.id = user.getId();
         this.username = user.getUsername();
         this.password = user.getPassword();
-        this.email = user.getEmail();
 
     }
 
