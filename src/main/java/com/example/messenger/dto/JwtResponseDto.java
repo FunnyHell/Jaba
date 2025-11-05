@@ -19,5 +19,5 @@ public class JwtResponseDto {
     @NotBlank
     public String accessToken;
     @NotBlank
-    public String rerfreshToken;
+    public String refreshToken;
 }

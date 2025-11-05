@@ -5,6 +5,7 @@
 
 package com.example.messenger.config;
 
+import com.example.messenger.security.JwtAuth;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,6 +23,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import com.example.messenger.service.UserDetailService;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  *
@@ -32,6 +34,7 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity
 public class SecurityConfig {
     private final UserDetailService userDetailService;
+    private final JwtAuth jwtAuth;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -44,11 +47,12 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .sessionManagement(session -> session.sessionCreationPolicy((SessionCreationPolicy.STATELESS)))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/register", "/").permitAll()
-                .requestMatchers("/resources/**").permitAll()
+                .requestMatchers("/api/auth/register", "/register.html").permitAll()
+                .requestMatchers("/script/**", "/style/**").permitAll()
                 .anyRequest().authenticated()
             )
-            .authenticationProvider(authenticationProvider());
+            .authenticationProvider(authenticationProvider())
+            .addFilterBefore(jwtAuth, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

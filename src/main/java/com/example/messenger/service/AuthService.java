@@ -36,6 +36,7 @@ public class AuthService {
                         .build();        
 
         User saved = userRepository.save(user);
+
         return UserResponseDTO.builder()
                 .message("User registered successfully")
                 .userId(saved.getId())

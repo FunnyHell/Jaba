@@ -28,13 +28,13 @@ import io.jsonwebtoken.security.Keys;
  */
 @Component
 public class JwtToken {
-    @Value("$(application.jwt.secret)")
+    @Value("${application.jwt.secret}")
     private String SECRET_KEY;
 
-    @Value("$(application.jwt.access.expire)")
+    @Value("${application.jwt.access.expire}")
     private long ACCESS_EXPIRE;
 
-    @Value("$(application.jwt.refresh.expire)")
+    @Value("${application.jwt.refresh.expire}")
     private long REFRESH_EXPIRE;
 
     public JwtResponseDto generateToken(UserDetail userDetail) {

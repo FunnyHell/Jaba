@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация | Jaba</title>
+    <link rel="stylesheet" href="/style/register.css">
+</head>
+<body>
+<div class="register-container">
+    <h2>Регистрация</h2>
+    <form id="registerForm">
+        <input type="text" name="username" placeholder="Имя пользователя" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Пароль" required>
+        <button type="submit">Зарегистрироваться</button>
+    </form>
+    <div class="message" id="message"></div>
+</div>
+
+<script src="/script/register.js"></script>
+</body>
+</html>

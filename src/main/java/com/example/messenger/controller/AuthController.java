@@ -5,12 +5,14 @@
 
 package com.example.messenger.controller;
 
+import com.example.messenger.dto.JwtResponseDto;
+import com.example.messenger.model.UserDetail;
+import com.example.messenger.security.JwtToken;
+import com.example.messenger.service.UserDetailService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.messenger.dto.UserRegisterRequestDto;
 import com.example.messenger.dto.UserResponseDTO;
@@ -30,13 +32,14 @@ import lombok.RequiredArgsConstructor;
 @Validated
 public class AuthController {
     private final AuthService authService;
-
+    private final UserDetailService userDetailService;
+    private final JwtToken jwtToken;
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponseDTO> userRegister(@Valid @RequestBody UserRegisterRequestDto userRegisterRequestDto) {
+    public ResponseEntity<JwtResponseDto> userRegister(@Valid @RequestBody UserRegisterRequestDto userRegisterRequestDto) {
         UserResponseDTO result = authService.register(userRegisterRequestDto);
-        return ResponseEntity.ok(result);
+        UserDetail userDetail = userDetailService.loadUserByUsername(result.getUsername());
+        return new ResponseEntity<>(jwtToken.generateToken(userDetail),HttpStatus.OK);
     }
-    
-    
+
 }
