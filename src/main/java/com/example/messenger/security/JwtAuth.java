@@ -44,11 +44,11 @@ public class JwtAuth extends OncePerRequestFilter {
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
         String token = getTokenFromRequest(request);
 
-        if (request.getRequestURI().startsWith("/") ||
-                request.getRequestURI().startsWith("/style/") ||
+        if (request.getRequestURI().startsWith("/style/") ||
                 request.getRequestURI().startsWith("/script/") ||
                 request.getRequestURI().equals("/auth")) {
                     filterChain.doFilter(request, response);
+
                     return;
                 }
 

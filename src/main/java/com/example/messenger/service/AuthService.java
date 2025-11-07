@@ -38,7 +38,6 @@ public class AuthService {
         User saved = userRepository.save(user);
 
         return UserResponseDTO.builder()
-                .message("User registered successfully")
                 .userId(saved.getId())
                 .username(saved.getUsername())
                 .email(saved.getEmail())

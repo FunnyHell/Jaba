@@ -23,13 +23,15 @@ public class UserDetail implements UserDetails {
     private final Long id;
     private final String username;
     private final String password;
+    @Getter //TODO: Спросить за этот геттер
+    private final String email;
 
 
     public UserDetail(User user) {
         this.id = user.getId();
         this.username = user.getUsername();
         this.password = user.getPassword();
-
+        this.email = user.getEmail();
     }
 
     @Override
@@ -46,7 +48,6 @@ public class UserDetail implements UserDetails {
     public String getUsername() {
         return this.username;
     }
-
 
     @Override
     public boolean isAccountNonExpired() {

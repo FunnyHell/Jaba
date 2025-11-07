@@ -21,7 +21,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 public class UserResponseDTO {
-    private String message;
     private Long userId;
     private String username;
     private String email;
