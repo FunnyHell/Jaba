@@ -5,6 +5,9 @@
 
 package com.example.messenger.service;
 
+import com.example.messenger.model.UserProfile;
+import com.example.messenger.utils.UserMapper;
+import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +17,7 @@ import com.example.messenger.model.User;
 import com.example.messenger.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -24,8 +28,16 @@ import lombok.RequiredArgsConstructor;
 public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
+    private final FileStorageService fileStorageService;
 
-    public UserResponseDTO register(UserRegisterRequestDto userRegisterDto) {
+    @Transactional
+    public UserResponseDTO register(UserRegisterRequestDto userRegisterDto, MultipartFile file) {
+
+        String avatarPath = fileStorageService.saveFile(file);
+
+        UserProfile userProfile = userMapper.UserRegisterDTOToUserProfile(userRegisterDto);
+        userProfile.setProfilePic(avatarPath);
 
         String hashedPassword = passwordEncoder.encode(userRegisterDto.getPassword());
 
@@ -33,7 +45,8 @@ public class AuthService {
                         .email(userRegisterDto.getEmail())
                         .username(userRegisterDto.getUsername())
                         .password(hashedPassword)
-                        .build();        
+                        .build();
+        user.setProfile(userProfile);
 
         User saved = userRepository.save(user);
 

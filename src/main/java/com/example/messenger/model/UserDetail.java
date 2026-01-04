@@ -5,9 +5,12 @@
 
 package com.example.messenger.model;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
+import lombok.Builder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,35 +21,29 @@ import lombok.Getter;
  *
  * @author FunnyHell
  */
+@Getter
+@Builder
 public class UserDetail implements UserDetails {
-    @Getter
-    private final Long id;
-    private final String username;
-    private final String password;
-    @Getter //TODO: Спросить за этот геттер
-    private final String email;
-
-
-    public UserDetail(User user) {
-        this.id = user.getId();
-        this.username = user.getUsername();
-        this.password = user.getPassword();
-        this.email = user.getEmail();
-    }
+    private Long id;
+    private String username;
+    private String password;
+    private String email;
+    private String firstName;
+    private String lastName;
+    private String phoneNumber;
+    private LocalDate birthDate;
+    private String profilePic;
+    private String bio;
+    private String city;
+    private String country;
+    private Boolean gender;
+    private Boolean isOnline;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
-    }
-
-    @Override
-    public String getPassword() {
-        return this.password;
-    }
-
-    @Override
-    public String getUsername() {
-        return this.username;
     }
 
     @Override

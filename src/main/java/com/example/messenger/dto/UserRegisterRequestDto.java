@@ -1,12 +1,12 @@
 package com.example.messenger.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.LocalDate;
 
 /**
  *
@@ -26,4 +26,26 @@ public class UserRegisterRequestDto {
     @Size(min = 6, message = "Password must be at least 6 characters long")
     @NotBlank(message = "Password is mandatory")
     private String password;
+
+//    Profile
+    @NotBlank(message = "First name is mandatory")
+    private String firstName;
+
+    private String lastName;
+
+    @Pattern(regexp = "^\\+?[0-9]{10,15}$")
+    private String phoneNumber;
+
+    @Past
+    private LocalDate birthDate;
+
+    private String profilePic;
+
+    @Size(max = 500, message = "Bio must be no more than 500 characters")
+    private String bio;
+
+    private String city;
+    private String country;
+
+    private Boolean gender;
 }
