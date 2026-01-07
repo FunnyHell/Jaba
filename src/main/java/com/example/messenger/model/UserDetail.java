@@ -27,19 +27,7 @@ public class UserDetail implements UserDetails {
     private Long id;
     private String username;
     private String password;
-    private String email;
-    private String firstName;
-    private String lastName;
-    private String phoneNumber;
-    private LocalDate birthDate;
-    private String profilePic;
-    private String bio;
-    private String city;
-    private String country;
-    private Boolean gender;
-    private Boolean isOnline;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

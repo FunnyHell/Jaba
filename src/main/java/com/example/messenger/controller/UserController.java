@@ -5,6 +5,7 @@ import com.example.messenger.dto.UserResponseDTO;
 
 import com.example.messenger.model.UserDetail;
 
+import com.example.messenger.service.UserService;
 import com.example.messenger.utils.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Validated
 public class UserController {
-    private final UserMapper userMapper;
+    private final UserService userService;
 
     @GetMapping("/profile")
     public ResponseEntity<UserResponseDTO> getProfile(@AuthenticationPrincipal UserDetail userDetail) {
-        UserResponseDTO userResponseDTO = userMapper.userToUserResponseDTO(userDetail);
+        UserResponseDTO userResponseDTO = userService.getUserProfile(userDetail.getUsername());
         return ResponseEntity.ok(userResponseDTO);
     }
 }

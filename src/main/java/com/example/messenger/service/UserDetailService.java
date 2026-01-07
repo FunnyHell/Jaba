@@ -30,23 +30,10 @@ public class UserDetailService implements UserDetailsService{
     @Transactional(readOnly = true)
     public UserDetail loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
-        UserProfile profile = user.getProfile();
         return UserDetail.builder()
                 .id(user.getId())
                 .username(user.getUsername())
-                .email(user.getEmail())
-                .firstName(profile.getFirstName())
-                .lastName(profile.getLastName())
-                .phoneNumber(profile.getPhoneNumber())
-                .birthDate(profile.getBirthDate())
-                .profilePic(profile.getProfilePic())
-                .bio(profile.getBio())
-                .city(profile.getCity())
-                .country(profile.getCountry())
-                .gender(profile.getGender())
-                .isOnline(profile.getIsOnline())
-                .createdAt(profile.getCreatedAt())
-                .updatedAt(profile.getUpdatedAt())
+                .password(user.getPassword())
                 .build();
     }
 }

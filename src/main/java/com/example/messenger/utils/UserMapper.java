@@ -2,36 +2,46 @@ package com.example.messenger.utils;
 
 import com.example.messenger.dto.UserRegisterRequestDto;
 import com.example.messenger.dto.UserResponseDTO;
+import com.example.messenger.model.User;
 import com.example.messenger.model.UserDetail;
 import com.example.messenger.model.UserProfile;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserMapper {
-    public UserResponseDTO userToUserResponseDTO(UserDetail user) {
+    public UserResponseDTO userDetailToUserResponseDTO(UserDetail user) {
         if (user == null) return null;
 
-        String profilePic = "/media/avatars/" + user.getProfilePic();
-        String address = this.formatAddress(user.getCity(), user.getCountry());
-        String gender = this.mapGender(user.getGender());
+        return UserResponseDTO.builder()
+                .userId(user.getId())
+                .username(user.getUsername())
+                .build();
+    }
+
+    public UserResponseDTO userAndProfileToDTO(User user, UserProfile userProfile) {
+        if (user == null) return null;
+
+        String profilePic = "/media/avatars/" + userProfile.getProfilePic();
+        String address = this.formatAddress(userProfile.getCity(), userProfile.getCountry());
+        String gender = this.mapGender(userProfile.getGender());
 
         return UserResponseDTO.builder()
                 .userId(user.getId())
                 .username(user.getUsername())
                 .email(user.getEmail())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .phoneNumber(user.getPhoneNumber())
-                .birthDate(user.getBirthDate())
+                .firstName(userProfile.getFirstName())
+                .lastName(userProfile.getLastName())
+                .phoneNumber(userProfile.getPhoneNumber())
+                .birthDate(userProfile.getBirthDate())
                 .profilePicture(profilePic)
-                .bio(user.getBio())
-                .city(user.getCity())
-                .country(user.getCountry())
+                .bio(userProfile.getBio())
+                .city(userProfile.getCity())
+                .country(userProfile.getCountry())
                 .address(address)
                 .gender(gender)
-                .isOnline(user.getIsOnline())
-                .createdAt(user.getCreatedAt())
-                .updatedAt(user.getUpdatedAt())
+                .isOnline(userProfile.getIsOnline())
+                .createdAt(userProfile.getCreatedAt())
+                .updatedAt(userProfile.getUpdatedAt())
                 .build();
     }
 
