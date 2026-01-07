@@ -7,14 +7,14 @@ import lombok.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Valid
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@Builder
 @Entity
 @Table(name = "user_profiles")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Valid
+@Builder
 public class UserProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
